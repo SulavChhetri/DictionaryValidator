@@ -29,7 +29,7 @@ valrule = {
 
 
 
-#Second Type, dictionary contains a list which contains another dictionary
+#Second Type, dictionary contains a list which contains another
 country = {
     'name': 'Neverland',
     'cities': [
@@ -53,6 +53,34 @@ valcountry ={
      'cities': {
          'type': list,
          'item_type': dict,
+         'item_nesteddict': valcity,
+     },
+ }
+
+
+
+#Third Example, dictionary inside a dictionary
+
+country3= {
+    'name': 'Neverland',
+    'cities': {'key':[{'name': 'Faketown', 'population': 3},{'name': 'Evergreen', 'population': 4}]}, #This case
+ }
+
+valcity3={
+     'name': {
+         'type': str
+     },
+     'population': {
+         'type': int,
+         'isGreaterthan': 0,
+     },
+ }
+
+valcountry3 ={
+     'name': {'type': str},
+     'cities': {
+         'type': dict,
+         'item_type': str,
          'item_nesteddict': valcity,
      },
  }
