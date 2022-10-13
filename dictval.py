@@ -1,29 +1,28 @@
-country = {
-    'name': 'Neverland',
-    'cities': [
-        {'name': True, 'population': 4},
-        {'name': 'Evergreen', 'population': 5}
-    ],
- }
+d = {
+    "name": "Sulav",
+    "age": 22,
+    "city" : "Syangja",
+    "isEngineer": True
+}
 
-valcity={
-     'name': {
-         'type': str
-     },
-     'population': {
-         'type': int,
-         'isGreaterthan': 0,
-     },
- }
-
-valcountry ={
-     'name': {'type': str},
-     'cities': {
-         'type': list,
-         'item_type': dict,
-         'item_nesteddict': valcity,
-     },
- }
+valrule = {
+    "name" : {
+        "type": str,
+        'minlength':4,
+        'maxlength': 10
+    },
+    'age': {
+        'type': int,
+        'isGreaterthan': 0,
+        'isLessthan': 150
+    },
+    'city':{
+        'type': str
+    },
+    'isEngineer':{
+        'type': bool
+    }
+}
 
 
 def type1(value,standard,input):
@@ -67,9 +66,7 @@ def item_nesteddict(value,standard,input):
                 itemlist = value[item]
                 for items in itemlist:
                     validator(items,standard)
-                    # print(validator(items,standard))
             else:
-                # print(validator(item,standard))
                 validator(item,standard)
 
 
@@ -92,11 +89,7 @@ def validator(dictionary, validationrule):
                     return False
                 elif(function=='isLessthan' and isLessthan(value,rule[function],key)==False):
                     return False
-                elif(function=='item_type' and item_type(value,rule[function], key)==False):
-                    return False
-                elif (function == 'item_nesteddict'):
-                    item_nesteddict(value,rule[function],key)
         return True
 
 if __name__ == "__main__":
-    print(validator(country,valcountry))
+    print(validator(d,valrule))
