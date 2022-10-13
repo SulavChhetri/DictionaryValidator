@@ -84,3 +84,43 @@ valcountry3 ={
          'item_nesteddict': valcity,
      },
  }
+
+
+
+
+entry = {
+    'name': 'Sulav',
+    'age' : 22,
+    'address': {
+        'street':"Putalibazar",
+        'zipcode': 3244,
+        'country':'Nepal'
+    }
+}
+addressvalid ={
+    'street': {
+        'type': str
+    },
+    'zipcode':{
+        'type': int
+    },
+    'country':{
+        'type': str
+    }
+}
+validationentry = {
+    'name': {
+        'type':str,
+        'minlength': 3,
+        'maxlength': 10
+    },
+    'age': {
+        'type': int,
+        'minage':0,
+        'maxage': 150
+    },
+    'address':{
+        'type': dict,
+        'item_nesteddict': addressvalid
+    }
+}

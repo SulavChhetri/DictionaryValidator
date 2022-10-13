@@ -1,26 +1,37 @@
-d = {
-    "name": "Sulav",
-    "age": 22,
-    "city" : "Syangja",
-    "isEngineer": True
+entry = {
+    'name': 'Sulav',
+    'age' : 22,
+    'address': {
+        'street':"Putalibazar",
+        'zipcode': 3244,
+        'country':'Nepal'
+    }
 }
-
-valrule = {
-    "name" : {
-        "type": str,
-        'minlength':4,
+addressvalid ={
+    'street': {
+        'type': str
+    },
+    'zipcode':{
+        'type': int
+    },
+    'country':{
+        'type': str
+    }
+}
+validationentry = {
+    'name': {
+        'type':str,
+        'minlength': 3,
         'maxlength': 10
     },
     'age': {
         'type': int,
-        'isGreaterthan': 0,
-        'isLessthan': 150
+        'minage':0,
+        'maxage': 150
     },
-    'city':{
-        'type': str
-    },
-    'isEngineer':{
-        'type': bool
+    'address':{
+        'type': dict,
+        'item_nesteddict': addressvalid
     }
 }
 
@@ -50,25 +61,10 @@ def isLessthan(value,standard,input):
         print(f'The {input} must be less than {standard} but is {value}')
         return False
 
-def item_type(value,standard,input):
-    for items in value:
-        if not type(items)==standard:
-            print(f'The items inside the {input} must be {standard} but is {type(items)}')
-            return False
-
-
-def item_nesteddict(value,standard,input):
-    if not type(standard)==dict:
-        raise TypeError(f"The standard of {input} must be a dictionary")
-    else:
-        for item in value:
-            if(type(item)==str):
-                itemlist = value[item]
-                for items in itemlist:
-                    validator(items,standard)
-            else:
-                validator(item,standard)
-
+def nestedfunction(value,standard,input):
+    x= validator(value,standard)
+    if x==False:
+        return False
 
 def validator(dictionary, validationrule):
     if dictionary.keys()!=validationrule.keys():
@@ -85,11 +81,13 @@ def validator(dictionary, validationrule):
                     return False
                 elif(function=='maxlength' and maxlength(value,rule[function],key)==False):
                     return False
-                elif(function=='isGreaterthan' and isGreaterthan(value,rule[function],key)==False):
+                elif(function=='minage' and isGreaterthan(value,rule[function],key)==False):
                     return False
-                elif(function=='isLessthan' and isLessthan(value,rule[function],key)==False):
+                elif(function=='maxage' and isLessthan(value,rule[function],key)==False):
+                    return False
+                elif(function=='item_nesteddict' and nestedfunction(value,rule[function],key)==False):
                     return False
         return True
 
 if __name__ == "__main__":
-    print(validator(d,valrule))
+    print(validator(entry,validationentry))
