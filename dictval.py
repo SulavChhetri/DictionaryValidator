@@ -1,7 +1,9 @@
-from collections import defaultdict
 country = {
-    'name': "Nepal",
-    'cities': {'key':[{'name': 'Faketown', 'population': 3},{'name': 'Evergreen', 'population': 4}]},
+    'name': 'Neverland',
+    'cities': [
+        {'name': True, 'population': 4},
+        {'name': 'Evergreen', 'population': 5}
+    ],
  }
 
 valcity={
@@ -17,41 +19,14 @@ valcity={
 valcountry ={
      'name': {'type': str},
      'cities': {
-         'type': dict,
-         'item_type': str,
+         'type': list,
+         'item_type': dict,
          'item_nesteddict': valcity,
      },
  }
 
-def mergedictionary(d1,d2):
-    mergeddict = defaultdict(list)
-    for dic in (d1, d2):
-        for key, value in dic.items():
-            mergeddict[key].append(value)
-    return mergeddict
 
-def aftermerge(merge):
-    for key in merge:
-            value = merge[key][0]
-            rule = merge[key][1]
-
-            for function in rule.keys():
-                if(function=='type' and Type(value,rule[function],key)==False):
-                    return False
-                elif(function=='minlength' and minlength(value,rule[function],key)==False):
-                    return False
-                elif(function=='maxlength' and maxlength(value,rule[function],key)==False):
-                    return False
-                elif(function=='isGreaterthan' and isGreaterthan(value,rule[function],key)==False):
-                    return False
-                elif(function=='isLessthan' and isLessthan(value,rule[function],key)==False):
-                    return False
-                elif(function=='item_type' and item_type(value,rule[function], key)==False):
-                    return False
-                elif (function == 'item_nesteddict' and item_nesteddict(value,rule[function],key)==False):
-                    return False
-
-def Type(value,standard,input):
+def type1(value,standard,input):
     if not type(value)==standard:
         print(f"The type of a {input} must be {standard} but is {type(value)}")
         return False
@@ -85,18 +60,17 @@ def item_type(value,standard,input):
 
 def item_nesteddict(value,standard,input):
     if not type(standard)==dict:
-        print(f"The standard of {input} must be a dictionary")
-        return False
+        raise TypeError(f"The standard of {input} must be a dictionary")
     else:
         for item in value:
             if(type(item)==str):
                 itemlist = value[item]
                 for items in itemlist:
-                    anothermerge = mergedictionary(items, standard)
-                    aftermerge(anothermerge)
+                    validator(items,standard)
+                    # print(validator(items,standard))
             else:
-                anothermerge = mergedictionary(item, standard)
-                aftermerge(anothermerge)
+                # print(validator(item,standard))
+                validator(item,standard)
 
 
 def validator(dictionary, validationrule):
@@ -104,14 +78,25 @@ def validator(dictionary, validationrule):
        print("The keys in dictionary and Validation dictionary are different!")
        return False
     else:
-        merge = mergedictionary(dictionary,validationrule)
-        x = aftermerge(merge)
-        if not x == False:
-            return True
-        else:
-            return False
-      
-
+        for key in validationrule:
+            value = dictionary[key]
+            rule = validationrule[key]
+            for function in rule.keys():
+                if(function=='type' and type1(value,rule[function],key)==False):
+                    return False
+                elif(function=='minlength' and minlength(value,rule[function],key)==False):
+                    return False
+                elif(function=='maxlength' and maxlength(value,rule[function],key)==False):
+                    return False
+                elif(function=='isGreaterthan' and isGreaterthan(value,rule[function],key)==False):
+                    return False
+                elif(function=='isLessthan' and isLessthan(value,rule[function],key)==False):
+                    return False
+                elif(function=='item_type' and item_type(value,rule[function], key)==False):
+                    return False
+                elif (function == 'item_nesteddict'):
+                    item_nesteddict(value,rule[function],key)
+        return True
 
 if __name__ == "__main__":
     print(validator(country,valcountry))
