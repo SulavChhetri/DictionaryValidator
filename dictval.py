@@ -1,35 +1,4 @@
-#The following types of dictionaries are accepted by our function
-
-#First Type/Simple one
-d = {
-    "name": "Sulav",
-    "age": 22,
-    "city" : "Syangja",
-    "isEngineer": True
-}
-
-valrule = {
-    "name" : {
-        "type": str,
-        'minlength':4,
-        'maxlength': 10
-    },
-    'age': {
-        'type': int,
-        'minimum': 0,
-        'maximum': 150
-    },
-    'city':{
-        'type': str
-    },
-    'isEngineer':{
-        'type': bool
-    }
-}
-
-
-
-#Second Type, dictionary contains a list which contains another
+#dictionary contains a list which contains another
 country = {
     'name': 'Neverland',
     'cities': [
@@ -57,50 +26,81 @@ valcountry ={
          'item_nesteddict': valcity,
      },
  }
+#The following types of dictionaries are accepted by our function
+
+#First Type/Simple one
+# d = {
+#     "name": "Sulav",
+#     "age": 22,
+#     "city" : "Syangja",
+#     "isEngineer": True
+# }
+
+# valrule = {
+#     "name" : {
+#         "type": str,
+#         'minlength':4,
+#         'maxlength': 10
+#     },
+#     'age': {
+#         'type': int,
+#         'minimum': 0,
+#         'maximum': 150
+#     },
+#     'city':{
+#         'type': str
+#     },
+#     'isEngineer':{
+#         'type': bool
+#     }
+# }
+
+
+
 
 
 
 #nesteddictionary
-entry = {
-    'name': 'Sulav',
-    'age' : 22,
-    'address': {
-        'street':"Putalibazar",
-        'zipcode': 3244,
-        'country':'Nepal'
-    }
-}
-addressvalid ={
-    'street': {
-        'type': str,
-        'minlength':4,
-        'maxlength': 20
-    },
-    'zipcode':{
-        'type': int
-    },
-    'country':{
-        'type': str,
-        'minlength':4,
-        'maxlength': 10
-    }
-}
-validationentry = {
-    'name': {
-        'type':str,
-        'minlength': 3,
-        'maxlength': 10
-    },
-    'age': {
-        'type': int,
-        'minimum':0,
-        'maximum': 150
-    },
-    'address':{
-        'type': dict,
-        'item_nesteddict': addressvalid
-    }
-}
+# entry = {
+#     'name': 'Sulav',
+#     'age' : 22,
+#     'address': {
+#         'street':"Putalibazar",
+#         'zipcode': 3244,
+#         'country':'Nepal'
+#     }
+# }
+# addressvalid ={
+#     'street': {
+#         'type': str,
+#         'minlength':4,
+#         'maxlength': 20
+#     },
+#     'zipcode':{
+#         'type': int
+#     },
+#     'country':{
+#         'type': str,
+#         'minlength':4,
+#         'maxlength': 10
+#     }
+# }
+# validationentry = {
+#     'name': {
+#         'type':str,
+#         'minlength': 3,
+#         'maxlength': 10
+#     },
+#     'age': {
+#         'type': int,
+#         'minimum':0,
+#         'maximum': 150
+#     },
+#     'address':{
+#         'type': dict,
+#         'item_nesteddict': addressvalid
+#     }
+# }
 def type1(value,standard,input):
     if not type(value)==standard:
         print(f"The type of a {input} must be {standard} but is {type(value)}")
@@ -161,6 +161,6 @@ def validator(dictionary, validationrule):
         return True
 
 if __name__ == "__main__":
-    print(validator(entry,validationentry))
+    # print(validator(entry,validationentry))
+    # print(validator(d,valrule))
     print(validator(country,valcountry))
-    print(validator(d,valrule))
