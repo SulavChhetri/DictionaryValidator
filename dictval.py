@@ -1,3 +1,66 @@
+#The following types of dictionaries are accepted by our function
+
+#First Type/Simple one
+d = {
+    "name": "Sulav",
+    "age": 22,
+    "city" : "Syangja",
+    "isEngineer": True
+}
+
+valrule = {
+    "name" : {
+        "type": str,
+        'minlength':4,
+        'maxlength': 10
+    },
+    'age': {
+        'type': int,
+        'minimum': 0,
+        'maximum': 150
+    },
+    'city':{
+        'type': str
+    },
+    'isEngineer':{
+        'type': bool
+    }
+}
+
+
+
+#Second Type, dictionary contains a list which contains another
+country = {
+    'name': 'Neverland',
+    'cities': [
+        {'name': 'Faketown', 'population': 3},
+        {'name': 'Evergreen', 'population': 4}
+    ],
+ }
+
+valcity={
+     'name': {
+        'type': str,
+        'minlength':4,
+        'maxlength': 10
+     },
+     'population': {
+         'type': int,
+         'minimum': 0,
+     },
+ }
+
+valcountry ={
+     'name': {'type': str},
+     'cities': {
+         'type': list,
+         'item_nesteddict': valcity,
+     },
+ }
+
+
+
+#nesteddictionary
 entry = {
     'name': 'Sulav',
     'age' : 22,
@@ -9,13 +72,17 @@ entry = {
 }
 addressvalid ={
     'street': {
-        'type': str
+        'type': str,
+        'minlength':4,
+        'maxlength': 20
     },
     'zipcode':{
         'type': int
     },
     'country':{
-        'type': str
+        'type': str,
+        'minlength':4,
+        'maxlength': 10
     }
 }
 validationentry = {
@@ -26,16 +93,14 @@ validationentry = {
     },
     'age': {
         'type': int,
-        'minage':0,
-        'maxage': 150
+        'minimum':0,
+        'maximum': 150
     },
     'address':{
         'type': dict,
         'item_nesteddict': addressvalid
     }
 }
-
-
 def type1(value,standard,input):
     if not type(value)==standard:
         print(f"The type of a {input} must be {standard} but is {type(value)}")
@@ -62,9 +127,15 @@ def isLessthan(value,standard,input):
         return False
 
 def nestedfunction(value,standard,input):
-    x= validator(value,standard)
-    if x==False:
-        return False
+    if(type(value)==list):
+        for item in value:
+            x = validator(item,standard)
+            if x==False:
+                return False
+    elif(type(value)==dict):
+        x = validator(value,standard)
+        if x==False:
+            return False
 
 def validator(dictionary, validationrule):
     if dictionary.keys()!=validationrule.keys():
@@ -81,9 +152,9 @@ def validator(dictionary, validationrule):
                     return False
                 elif(function=='maxlength' and maxlength(value,rule[function],key)==False):
                     return False
-                elif(function=='minage' and isGreaterthan(value,rule[function],key)==False):
+                elif(function=='minimum' and isGreaterthan(value,rule[function],key)==False):
                     return False
-                elif(function=='maxage' and isLessthan(value,rule[function],key)==False):
+                elif(function=='max' and isLessthan(value,rule[function],key)==False):
                     return False
                 elif(function=='item_nesteddict' and nestedfunction(value,rule[function],key)==False):
                     return False
@@ -91,3 +162,5 @@ def validator(dictionary, validationrule):
 
 if __name__ == "__main__":
     print(validator(entry,validationentry))
+    print(validator(country,valcountry))
+    print(validator(d,valrule))
